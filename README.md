@@ -1,6 +1,6 @@
 # Console Virtual Pet 🐱
 
-A simple, interactive C++ console application that simulates a virtual pet. This project demonstrates core programming concepts including game loops, state management, input handling, and screen refreshing for a "pseudo-GUI" effect.
+A simple, interactive C++ console application that simulates a virtual pet. This project demonstrates core programming concepts including game loops, state management, input handling, and a "pseudo-GUI" effect.
 
 ## 🎮 Features
 *   **Dynamic Stats:** Manage Hunger, Happiness, and Energy.
