@@ -1,118 +1,93 @@
 #include <iostream>
 #include <string>
-#include <cstdlib> 
-#include <thread>  
-#include <chrono>
 
 using namespace std;
 
-
-void clearScreen() {
-   
-    #ifdef _WIN32
-        system("cls");
-    #else
-        system("clear");
-    #endif
-}
-
-
-void drawBar(string label, int value) {
-    cout << label << ": [";
-    int bars = value / 10; 
-    
-    for (int i = 0; i < 10; i++) {
-        if (i < bars) cout << "#";
-        else cout << "-";
-    }
-    cout << "] " << value << "%" << endl;
-}
-
-
-void drawPet(int mood) {
-    cout << "\n";
-    if (mood == 1) { // HAPPY
-        cout << "      /\\_/\\  " << endl;
-        cout << "     ( ^.^ )  < Meow!" << endl;
-        cout << "      > ^ <  " << endl;
-    } else if (mood == 2) { // SAD / HUNGRY
-        cout << "      /\\_/\\  " << endl;
-        cout << "     ( T_T )  < Feed me..." << endl;
-        cout << "      > ^ <  " << endl;
-    } else { // SLEEPY
-        cout << "      /\\_/\\  " << endl;
-        cout << "     ( -_- ) zZZ" << endl;
-        cout << "      > ^ <  " << endl;
-    }
-    cout << "\n";
-}
-
 int main() {
-    int hunger = 50;
-    int happiness = 50;
-    int energy = 50;
+    
+    string petName;
+    int hunger = 50;   
+    int happiness = 50; 
+    int energy = 50;    
     int choice;
-    bool running = true;
+    bool gameRunning = true;
 
-    while (running) {
-        clearScreen(); 
+    cout << "-----------------------------" << endl;
+    cout << "   VIRTUAL PET ADOPTION      " << endl;
+    cout << "-----------------------------" << endl;
+    cout << "Please name your new pet: ";
+    cin >> petName;
 
-        cout << "===========================" << endl;
-        cout << "         VIRTUAL PET       " << endl;
-        cout << "===========================" << endl;
-
-        int currentMood = 1;
-        if (energy < 30) currentMood = 3;
-        else if (hunger < 30 || happiness < 30) currentMood = 2;
-
-        drawPet(currentMood);
-
-     
-        drawBar("Hunger   ", hunger);
-        drawBar("Happiness", happiness);
-        drawBar("Energy   ", energy);
-
-        cout << "===========================" << endl;
+   
+    while (gameRunning) {
         
- 
-        if (hunger <= 0 || happiness <= 0 || energy <= 0) {
-            cout << "\nYOUR PET RAN AWAY!" << endl;
-            break;
+       
+        cout << "\n-----------------------------" << endl;
+        
+        
+        if (hunger < 20 || happiness < 20) {
+            cout << "   ( T_T )  <-- " << petName << " is sad/hungry!" << endl;
+        } else if (energy < 20) {
+            cout << "   ( -_- )  <-- " << petName << " is sleepy..." << endl;
+        } else {
+            cout << "   ( ^_^ )  <-- " << petName << " is happy!" << endl;
         }
 
- 
-        cout << "1. Feed  2. Play  3. Sleep  4. Exit" << endl;
-        cout << "Select: ";
-        cin >> choice;
-
-        if (choice == 1) { 
-            hunger += 20; energy -= 5; 
-            cout << "Eating..." << endl;
-        }
-        else if (choice == 2) { 
-            happiness += 20; hunger -= 10; energy -= 10; 
-            cout << "Playing..." << endl;
-        }
-        else if (choice == 3) { 
-            energy += 20; hunger -= 10; 
-            cout << "Sleeping..." << endl;
-        }
-        else if (choice == 4) { 
-            running = false; 
-        }
-
-  
-        std::this_thread::sleep_for(std::chrono::seconds(1));
+        cout << "Stats:" << endl;
+        cout << "Hunger:    " << hunger << "/100" << endl;
+        cout << "Happiness: " << happiness << "/100" << endl;
+        cout << "Energy:    " << energy << "/100" << endl;
 
        
+        if (hunger <= 0 || happiness <= 0 || energy <= 0) {
+            cout << "\nOH NO! " << petName << " has run away due to neglect!" << endl;
+            cout << "GAME OVER." << endl;
+            break; 
+        }
+
+        
+        cout << "\nWhat do you want to do?" << endl;
+        cout << "1. Feed " << petName << " (Increases Hunger)" << endl;
+        cout << "2. Play with " << petName << " (Increases Happiness, Tiring)" << endl;
+        cout << "3. Put " << petName << " to bed (Restores Energy)" << endl;
+        cout << "4. Quit Game" << endl;
+        cout << "Choice: ";
+        cin >> choice;
+
+        
+        if (choice == 1) { 
+            cout << "You fed " << petName << ". Yummy!" << endl;
+            hunger += 20;
+            energy -= 5; 
+        } 
+        else if (choice == 2) { 
+            cout << "You played fetch with " << petName << "!" << endl;
+            happiness += 20;
+            hunger -= 10; 
+            energy -= 10; 
+        } 
+        else if (choice == 3) { 
+            cout << "Shhh... " << petName << " is sleeping." << endl;
+            energy += 20;
+            hunger -= 10; 
+            happiness -= 5; 
+        } 
+        else if (choice == 4) { 
+            cout << "Goodbye! " << petName << " will miss you." << endl;
+            gameRunning = false;
+        } 
+        else {
+            cout << "Invalid choice." << endl;
+        }
+
+ 
         hunger -= 5;
         happiness -= 5;
         energy -= 5;
 
-       
-        if(hunger > 100) hunger = 100;
-        if(happiness > 100) happiness = 100;
-        if(energy > 100) energy = 100;
+        if (hunger > 100) hunger = 100;
+        if (happiness > 100) happiness = 100;
+        if (energy > 100) energy = 100;
     }
 
     return 0;
